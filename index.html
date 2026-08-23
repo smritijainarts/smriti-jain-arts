@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smriti Jain Arts | Handmade Catalogue</title>
+<meta name="description" content="Colourful handmade crochet, soft toys, keychains, bouquets and home decor by Smriti Jain Arts. Order directly on WhatsApp.">
+<link rel="icon" href="images/logo.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="compact-home.css?v=26">
+<link rel="stylesheet" href="product-detail.css?v=13">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="#home">
+    <img class="brand-logo" src="images/logo.png" alt="Smriti Jain Arts logo">
+    <span><strong>Smriti Jain Arts</strong><small>Handmade with heart</small></span>
+  </a>
+  <div class="product-search-wrap">
+    <span aria-hidden="true">⌕</span>
+    <input id="productSearch" type="search" placeholder="Search products…" aria-label="Search products" autocomplete="off">
+  </div>
+  <nav id="nav">
+    <a href="#home">Home</a>
+    <a href="#collection">Collection</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </nav>
+  <button id="menuBtn" type="button" aria-label="Open menu" aria-controls="nav" aria-expanded="false">☰</button>
+</header>
+
+<main>
+<section id="home" class="hero">
+  <div class="hero-copy">
+    <p class="eyebrow">COLOURFUL • ARTISTIC • HANDMADE</p>
+    <h1>Handmade pieces<br><em>with personality.</em></h1>
+    <p class="lead">Discover thoughtfully handcrafted décor, gifts and accessories—each uniquely made to bring creativity, warmth and personality to everyday life.</p>
+    <p class="micro">✦ Browse here. Order personally on WhatsApp.</p>
+  </div>
+  <div class="hero-collage" style="opacity:0" aria-busy="true">
+    <div class="hero-shot"><img alt=""></div>
+    <div class="hero-shot"><img alt=""></div>
+    <div class="hero-shot"><img alt=""></div>
+  </div>
+</section>
+
+<section id="collection" class="section">
+  <div class="section-head">
+    <div><p class="eyebrow">OUR COLLECTION</p><h2>Made by hand. Made to be loved.</h2></div>
+    <p>Tap any category to filter the collection, then open a product to view its photos, details and ordering option.</p>
+  </div>
+  <div class="catalogue-controls">
+    <label class="sort-control" for="productSort">
+      <span>Sort by</span>
+      <select id="productSort" aria-label="Sort products">
+        <option value="latest">Latest added</option>
+        <option value="price-low">Price: Low to High</option>
+        <option value="price-high">Price: High to Low</option>
+        <option value="name">Name: A–Z</option>
+      </select>
+    </label>
+    <div id="filters" class="filters"></div>
+  </div>
+  <div id="productGrid" class="product-grid"></div>
+  <nav id="productPagination" class="product-pagination" aria-label="Product pages" hidden></nav>
+</section>
+
+<section id="about" class="about">
+  <div class="about-card">
+    <p class="eyebrow">SMRITI JAIN ARTS</p>
+    <h2>Creative details,<br>made with care.</h2>
+    <p>Smriti Jain Arts creates colourful handmade products that bring warmth, charm and personality into everyday spaces. Each piece is crafted with attention to detail and a love for creative expression.</p>
+    <p class="handmade-value">The beauty of a handmade gift lies not only in its size, but in the time, skill and thoughtful effort behind every detail—making each creation genuinely unique.</p>
+    <div class="about-social-links" aria-label="Follow Smriti Jain Arts">
+      <a class="social-instagram" href="https://www.instagram.com/smritijainarts" target="_blank" rel="noopener">Instagram ↗</a>
+      <a class="social-facebook" href="https://www.facebook.com/smritijainarts/" target="_blank" rel="noopener">Facebook ↗</a>
+      <a class="social-youtube" href="https://www.youtube.com/@SmritiJainArts" target="_blank" rel="noopener">YouTube ↗</a>
+    </div>
+  </div>
+</section>
+
+<section class="how">
+  <p class="eyebrow">HOW TO ORDER</p>
+  <h2>Simple and personal.</h2>
+  <div class="steps">
+    <article><span>01</span><h3>Choose a product</h3><p>Browse the collection and select the handmade piece you like.</p></article>
+    <article><span>02</span><h3>Message on WhatsApp</h3><p>The product name and price are pre-filled for you automatically.</p></article>
+    <article><span>03</span><h3>Confirm your order</h3><p>Availability, payment and delivery can be discussed directly.</p></article>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div>
+    <p class="eyebrow">CUSTOM ORDERS WELCOME</p>
+    <h2>Have something special in mind?</h2>
+    <p>Message us for custom colours and thoughtful gifting ideas.</p>
+  </div>
+  <a class="btn light" href="https://wa.me/917666767484?text=Hi%20Smriti%20Jain!%20I%20want%20to%20discuss%20a%20custom%20handmade%20order." target="_blank" rel="noopener">Chat on WhatsApp →</a>
+</section>
+</main>
+
+<dialog id="productDialog" class="product-dialog" aria-labelledby="dialogProductName">
+  <button id="dialogClose" class="dialog-close" type="button" aria-label="Close product details">×</button>
+  <div class="dialog-layout">
+    <div class="dialog-gallery">
+      <div id="dialogZoom" class="dialog-main-image" aria-label="Zoom product image">
+        <img id="dialogImage" src="images/logo.png" alt="">
+        <span class="zoom-hint" aria-hidden="true">⌕ Zoom image</span>
+      </div>
+      <div id="dialogThumbs" class="dialog-thumbs" aria-label="Product images"></div>
+    </div>
+    <div class="dialog-info">
+      <p id="dialogCategory" class="eyebrow"></p>
+      <h2 id="dialogProductName"></h2>
+      <p id="dialogPrice" class="dialog-price"></p>
+      <p id="dialogStatus" class="dialog-status" hidden></p>
+      <p id="dialogSoldOutNote" class="sold-out-note" hidden>Still love it? You can place an order for a freshly handmade piece in a similar style.</p>
+      <a id="dialogSocial" class="product-social-link" href="#" target="_blank" rel="noopener" hidden>View this product post ↗</a>
+      <p id="dialogDescription" class="dialog-description"></p>
+      <a id="dialogOrder" class="btn whatsapp" href="#" target="_blank" rel="noopener">Order this product on WhatsApp →</a>
+      <small>Availability, custom colours and delivery can be confirmed directly.</small>
+    </div>
+  </div>
+</dialog>
+
+<footer>
+  <div><strong>Smriti Jain Arts</strong><small>Handmade with heart ✦</small></div>
+  <div class="footer-social">
+    <span>Follow our handmade journey</span>
+    <div class="footer-links">
+      <a class="social-instagram" href="https://www.instagram.com/smritijainarts" target="_blank" rel="noopener">Instagram ↗</a>
+      <a class="social-facebook" href="https://www.facebook.com/smritijainarts/" target="_blank" rel="noopener">Facebook ↗</a>
+      <a class="social-youtube" href="https://www.youtube.com/@SmritiJainArts" target="_blank" rel="noopener">YouTube ↗</a>
+    </div>
+  </div>
+  <small>© 2026 Smriti Jain Arts</small>
+</footer>
+
+<script src="script.js?v=33"></script>
+</body>
+</html>
