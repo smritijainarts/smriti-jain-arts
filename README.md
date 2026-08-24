@@ -49,3 +49,4 @@ main photo; `Image 2 URL` through `Image 5 URL` appear as selectable thumbnails.
 
 ## Publishing the website
 This ZIP still needs to be deployed to a web host. Once deployed, you normally do NOT re-upload the website when changing names, prices, descriptions, categories, availability, or adding rows. Those changes come from Google Sheets.
+This website is maintained using Git and GitHub Desktop.
