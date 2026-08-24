@@ -11,6 +11,7 @@ let activeCategory = "All";
 let searchTerm = "";
 let sortMode = "latest";
 let currentPage = 1;
+let showAllProducts = false;
 const PRODUCTS_PER_PAGE = 10;
 const CATEGORY_PRIORITY = [
   "Home Decor",
@@ -318,9 +319,24 @@ function sortProducts(list, mode = "latest") {
 }
 
 function renderPagination(totalItems, totalPages) {
-  if (totalPages <= 1) {
+  if (totalPages <= 1 && !showAllProducts) {
     pagination.hidden = true;
     pagination.innerHTML = "";
+    return;
+  }
+  if (showAllProducts) {
+    pagination.hidden = false;
+    pagination.innerHTML = `
+      <div class="pagination-summary">Showing all ${totalItems} products</div>
+      <div class="pagination-controls">
+        <button type="button" class="pagination-view-toggle" data-view="paged">Show ${PRODUCTS_PER_PAGE} per page</button>
+      </div>`;
+    pagination.querySelector("button[data-view='paged']")?.addEventListener("click", () => {
+      showAllProducts = false;
+      currentPage = 1;
+      renderProducts(activeCategory);
+      grid.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
     return;
   }
   const visiblePages = [];
@@ -340,6 +356,7 @@ function renderPagination(totalItems, totalPages) {
       <button type="button" class="pagination-nav" data-page="${currentPage - 1}" ${currentPage === 1 ? "disabled" : ""} aria-label="Previous product page">← <span>Previous</span></button>
       ${pageButtons}
       <button type="button" class="pagination-nav" data-page="${currentPage + 1}" ${currentPage === totalPages ? "disabled" : ""} aria-label="Next product page"><span>Next</span> →</button>
+      <button type="button" class="pagination-view-toggle" data-view="all">View all ${totalItems}</button>
     </div>`;
   pagination.querySelectorAll("button[data-page]").forEach(button => button.addEventListener("click", () => {
     const nextPage = Number(button.dataset.page);
@@ -348,6 +365,12 @@ function renderPagination(totalItems, totalPages) {
     renderProducts(activeCategory);
     grid.scrollIntoView({ behavior: "smooth", block: "start" });
   }));
+  pagination.querySelector("button[data-view='all']")?.addEventListener("click", () => {
+    showAllProducts = true;
+    currentPage = 1;
+    renderProducts(activeCategory);
+    grid.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
 }
 
 function renderProducts(cat = "All") {
@@ -364,11 +387,12 @@ function renderProducts(cat = "All") {
   }
   const paged = paginateProducts(list, currentPage);
   currentPage = paged.page;
-  grid.innerHTML = paged.items.map(p => {
+  const visibleProducts = showAllProducts ? list : paged.items;
+  grid.innerHTML = visibleProducts.map(p => {
     const productIndex = products.indexOf(p);
     return `
     <article class="product" data-index="${productIndex}" tabindex="0" aria-label="View details for ${p.name}">
-      <div class="product-image"><img src="${p.image || 'images/logo.png'}" alt="${p.name}" onerror="this.src='images/logo.png'"></div>
+      <div class="product-image"><img src="${p.image || 'images/logo.png'}" alt="${p.name}" loading="lazy" decoding="async" onerror="this.src='images/logo.png'"></div>
       <div class="product-info">
         <div class="cat">${p.category || "Handmade"}</div>
         <h3>${p.name}</h3>
