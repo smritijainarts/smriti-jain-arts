@@ -26,6 +26,7 @@ const grid = document.getElementById("productGrid");
 const pagination = document.getElementById("productPagination");
 const productSearch = document.getElementById("productSearch");
 const productSort = document.getElementById("productSort");
+const productViewToggle = document.getElementById("productViewToggle");
 const collectionSection = document.getElementById("collection");
 const heroImages = [...document.querySelectorAll(".hero-shot img")];
 const heroCollage = document.querySelector?.(".hero-collage");
@@ -383,10 +384,14 @@ function renderProducts(cat = "All") {
     grid.innerHTML = `<p class="catalog-message">${query ? "No products match your search." : "No products are currently available in this category."}</p>`;
     pagination.hidden = true;
     pagination.innerHTML = "";
+    productViewToggle.hidden = true;
     return;
   }
   const paged = paginateProducts(list, currentPage);
   currentPage = paged.page;
+  productViewToggle.hidden = paged.totalPages <= 1 && !showAllProducts;
+  productViewToggle.textContent = showAllProducts ? `Show ${PRODUCTS_PER_PAGE} per page` : `View all ${list.length} products`;
+  productViewToggle.setAttribute("aria-pressed", String(showAllProducts));
   const visibleProducts = showAllProducts ? list : paged.items;
   grid.innerHTML = visibleProducts.map(p => {
     const productIndex = products.indexOf(p);
@@ -481,6 +486,13 @@ productSort.addEventListener("change", () => {
   sortMode = productSort.value;
   currentPage = 1;
   renderProducts(activeCategory);
+});
+
+productViewToggle.addEventListener("click", () => {
+  showAllProducts = !showAllProducts;
+  currentPage = 1;
+  renderProducts(activeCategory);
+  grid.scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
 const productDialog = document.getElementById("productDialog");

@@ -10,7 +10,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="compact-home.css?v=27">
+<link rel="stylesheet" href="compact-home.css?v=28">
 <link rel="stylesheet" href="product-detail.css?v=13">
 </head>
 <body>
@@ -53,15 +53,18 @@
     <p>Tap any category to filter the collection, then open a product to view its photos, details and ordering option.</p>
   </div>
   <div class="catalogue-controls">
-    <label class="sort-control" for="productSort">
-      <span>Sort by</span>
-      <select id="productSort" aria-label="Sort products">
-        <option value="latest">Latest added</option>
-        <option value="price-low">Price: Low to High</option>
-        <option value="price-high">Price: High to Low</option>
-        <option value="name">Name: A–Z</option>
-      </select>
-    </label>
+    <div class="catalogue-toolbar">
+      <label class="sort-control" for="productSort">
+        <span>Sort by</span>
+        <select id="productSort" aria-label="Sort products">
+          <option value="latest">Latest added</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="price-high">Price: High to Low</option>
+          <option value="name">Name: A–Z</option>
+        </select>
+      </label>
+      <button id="productViewToggle" class="product-view-toggle" type="button" aria-pressed="false" hidden>View all products</button>
+    </div>
     <div id="filters" class="filters"></div>
   </div>
   <div id="productGrid" class="product-grid"></div>
@@ -139,6 +142,6 @@
   <small>© 2026 Smriti Jain Arts</small>
 </footer>
 
-<script src="script.js?v=34"></script>
+<script src="script.js?v=35"></script>
 </body>
 </html>

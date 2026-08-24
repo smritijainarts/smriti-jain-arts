@@ -224,6 +224,13 @@ section {
   margin-bottom: 20px;
 }
 
+.catalogue-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
 .filters {
   flex: 1 1 auto;
   gap: 9px;
@@ -256,6 +263,28 @@ section {
 .sort-control select:focus {
   border-color: #a45d79;
   box-shadow: 0 0 0 3px rgba(196, 87, 126, .12);
+}
+
+.product-view-toggle {
+  min-height: 36px;
+  padding: 7px 15px;
+  border: 1px solid #a45d79;
+  border-radius: 999px;
+  background: #fff7fa;
+  color: #8f4664;
+  font: 700 12px "DM Sans", sans-serif;
+  cursor: pointer;
+  transition: background .18s ease, color .18s ease, transform .18s ease;
+}
+
+.product-view-toggle:hover {
+  background: #a45d79;
+  color: #fff;
+  transform: translateY(-1px);
+}
+
+.product-view-toggle[hidden] {
+  display: none;
 }
 
 .product-grid {
@@ -671,6 +700,15 @@ footer strong {
 
   .catalogue-controls {
     gap: 12px;
+  }
+
+  .catalogue-toolbar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .product-view-toggle {
+    width: 100%;
   }
 
   .sort-control select {
