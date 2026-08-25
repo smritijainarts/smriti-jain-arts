@@ -104,8 +104,9 @@ section {
   border-radius: 0;
   box-shadow: none;
   transform: none !important;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
+  background: #f8f1eb;
 }
 
 .hero-shot:nth-child(1) {
