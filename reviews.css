@@ -1,11 +1,11 @@
 .reviews-section {
-  padding: 38px 7vw;
+  padding: 26px 7vw;
   background: linear-gradient(145deg, #fffaf5 0%, #f8efe4 100%);
 }
 
 .reviews-intro {
   max-width: 720px;
-  margin: 0 auto 18px;
+  margin: 0 auto 12px;
   text-align: center;
 }
 
@@ -24,14 +24,14 @@
 
 .reviews-layout {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 460px);
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
   gap: 16px;
   max-width: 980px;
   margin: 0 auto;
 }
 
 .review-showcase,
-.review-form {
+.review-form-panel {
   border: 1px solid rgba(221, 207, 213, .85);
   border-radius: 18px;
   background: rgba(255, 255, 255, .9);
@@ -40,10 +40,45 @@
 
 .review-showcase {
   display: flex;
-  min-height: 300px;
+  min-height: 180px;
   flex-direction: column;
   justify-content: center;
-  padding: clamp(24px, 3vw, 34px);
+  padding: 22px 26px;
+}
+
+.review-form-panel {
+  align-self: start;
+  overflow: hidden;
+}
+
+.review-form-panel summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 58px;
+  padding: 0 20px;
+  color: #2d2430;
+  font: 700 17px "DM Sans", sans-serif;
+  cursor: pointer;
+  list-style: none;
+}
+
+.review-form-panel summary::-webkit-details-marker {
+  display: none;
+}
+
+.review-form-panel summary span {
+  color: #a45d79;
+  font-size: 22px;
+  transition: transform .2s ease;
+}
+
+.review-form-panel[open] summary {
+  border-bottom: 1px solid #eadde2;
+}
+
+.review-form-panel[open] summary span {
+  transform: rotate(45deg);
 }
 
 .review-slide {
@@ -127,27 +162,13 @@
   grid-template-columns: repeat(2, minmax(0, 1fr));
   align-content: start;
   gap: 10px 12px;
-  padding: 20px;
+  padding: 16px 18px 18px;
 }
 
-.review-form-heading,
 .review-form label:nth-of-type(4),
 .review-form .review-submit,
 .review-form .review-message {
   grid-column: 1 / -1;
-}
-
-.review-form-heading h3 {
-  margin: 0;
-  color: #2d2430;
-  font: 700 23px/1.15 "Playfair Display", serif;
-}
-
-.review-form-heading > p:last-child {
-  margin: 5px 0 2px;
-  color: #766a72;
-  font-size: 12px;
-  line-height: 1.5;
 }
 
 .review-form label {
@@ -261,7 +282,7 @@
 
 @media (max-width: 820px) {
   .reviews-section {
-    padding: 36px 5vw;
+    padding: 26px 5vw;
   }
 
   .reviews-layout {
@@ -269,23 +290,23 @@
   }
 
   .review-showcase {
-    min-height: 230px;
+    min-height: 180px;
   }
 }
 
 @media (max-width: 520px) {
   .reviews-section {
-    padding: 32px 4vw;
+    padding: 24px 4vw;
   }
 
   .review-showcase,
-  .review-form {
+  .review-form-panel {
     border-radius: 19px;
   }
 
   .review-showcase {
-    min-height: 220px;
-    padding: 24px 20px;
+    min-height: 175px;
+    padding: 20px;
   }
 
   .review-form {

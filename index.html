@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="compact-home.css?v=30">
 <link rel="stylesheet" href="product-detail.css?v=13">
-<link rel="stylesheet" href="reviews.css?v=2">
+<link rel="stylesheet" href="reviews.css?v=3">
 </head>
 <body>
 <header class="topbar">
@@ -112,9 +112,7 @@
 
 <section id="reviews" class="reviews-section" aria-labelledby="reviewsHeading">
   <div class="reviews-intro">
-    <p class="eyebrow">CUSTOMER REVIEWS</p>
-    <h2 id="reviewsHeading">Customer love</h2>
-    <p>Read a review or share your experience.</p>
+    <h2 id="reviewsHeading">Customer reviews</h2>
   </div>
   <div class="reviews-layout">
     <div class="review-showcase" aria-label="Customer reviews">
@@ -130,11 +128,9 @@
       </div>
     </div>
 
-    <form id="reviewForm" class="review-form">
-      <div class="review-form-heading">
-        <h3>Leave a review</h3>
-        <p>Reviews appear after approval.</p>
-      </div>
+    <details class="review-form-panel">
+      <summary>Leave a review <span aria-hidden="true">＋</span></summary>
+      <form id="reviewForm" class="review-form">
       <label>
         <span>Your name <b aria-hidden="true">*</b></span>
         <input id="reviewName" name="name" type="text" minlength="2" maxlength="60" autocomplete="name" required>
@@ -166,7 +162,8 @@
       </label>
       <button id="reviewSubmit" class="review-submit" type="submit">Submit review</button>
       <p id="reviewMessage" class="review-message" role="status"></p>
-    </form>
+      </form>
+    </details>
   </div>
 </section>
 </main>
