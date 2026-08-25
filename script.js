@@ -110,6 +110,20 @@ function getImages(product) {
   return [...new Set([...(product.images || []), product.image].filter(Boolean))];
 }
 
+function getThumbnailUrl(product) {
+  const primaryImage = String(product?.image || "images/logo.png");
+  const localFolder = primaryImage.match(/^images\/([^/]+)\//i);
+  return localFolder ? `images/${localFolder[1]}/thumbnail.webp` : primaryImage;
+}
+
+function setImageWithFallback(imageElement, source, fallback) {
+  imageElement.onerror = () => {
+    imageElement.onerror = null;
+    imageElement.src = fallback || "images/logo.png";
+  };
+  imageElement.src = source;
+}
+
 function chooseHeroProducts(sourceProducts, previousIds = [], count = 3) {
   const candidates = sourceProducts.filter(product =>
     HERO_PRODUCT_IDS.has(String(product?.id || "").padStart(3, "0")) &&
@@ -136,7 +150,7 @@ function updateHeroImages(sourceProducts = products) {
   }
   const selected = chooseHeroProducts(sourceProducts, previousIds, heroImages.length);
   selected.forEach((product, index) => {
-    heroImages[index].src = product.image;
+    setImageWithFallback(heroImages[index], getThumbnailUrl(product), product.image);
     heroImages[index].alt = product.name;
   });
   try {
@@ -409,9 +423,10 @@ function renderProducts(cat = "All") {
   const visibleProducts = showAllProducts ? list : paged.items;
   grid.innerHTML = visibleProducts.map(p => {
     const productIndex = products.indexOf(p);
+    const primaryImage = p.image || "images/logo.png";
     return `
     <article class="product" data-index="${productIndex}" tabindex="0" aria-label="View details for ${p.name}">
-      <div class="product-image"><img src="${p.image || 'images/logo.png'}" alt="${p.name}" loading="lazy" decoding="async" onerror="this.src='images/logo.png'"></div>
+      <div class="product-image"><img src="${getThumbnailUrl(p)}" data-fallback="${primaryImage}" alt="${p.name}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=this.dataset.fallback||'images/logo.png'"></div>
       <div class="product-info">
         <div class="cat">${p.category || "Handmade"}</div>
         <h3>${p.name}</h3>
