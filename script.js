@@ -116,6 +116,14 @@ function getThumbnailUrl(product) {
   return localFolder ? `images/${localFolder[1]}/thumbnail.webp` : primaryImage;
 }
 
+function getWatermarkedUrl(url) {
+  const imageUrl = String(url || "images/logo.png");
+  const localImage = imageUrl.match(/^images\/([^/]+)\/([^/]+)\.(?:jpe?g|png|webp)$/i);
+  return localImage
+    ? `images/${localImage[1]}/watermarked/${localImage[2]}.webp`
+    : imageUrl;
+}
+
 function setImageWithFallback(imageElement, source, fallback) {
   imageElement.onerror = () => {
     imageElement.onerror = null;
@@ -556,8 +564,8 @@ function restorePageScrollInstantly(top) {
   }
 }
 
-function selectDialogImage(url, alt, button) {
-  dialogImage.src = url;
+function selectDialogImage(url, alt, button, fallback) {
+  setImageWithFallback(dialogImage, url, fallback);
   dialogImage.alt = alt;
   dialogZoom.classList.remove("is-zoomed");
   dialogImage.style.transformOrigin = "50% 50%";
@@ -576,7 +584,10 @@ function openProduct(index) {
   if (!product) return;
   pageScrollBeforeDialog = Number(globalThis.scrollY || 0);
   productDialog.scrollTop = 0;
-  const images = getImages(product);
+  const images = getImages(product).map(original => ({
+    url: getWatermarkedUrl(original),
+    fallback: original
+  }));
   dialogCategory.textContent = product.category || "Handmade";
   dialogProductName.textContent = product.name;
   dialogPrice.textContent = product.price;
@@ -596,15 +607,19 @@ function openProduct(index) {
       : "View this product post ↗";
   dialogSocial.classList.remove("is-instagram", "is-facebook");
   if (socialUrl) dialogSocial.classList.add(`is-${socialPlatform}`);
-  dialogThumbs.innerHTML = images.map((url, imageIndex) => `
+  dialogThumbs.innerHTML = images.map((image, imageIndex) => `
     <button class="dialog-thumb ${imageIndex === 0 ? "active" : ""}" type="button" data-image="${imageIndex}" aria-label="View image ${imageIndex + 1} of ${images.length}">
-      <img src="${url}" alt="" onerror="this.src='images/logo.png'">
+      <img src="${image.url}" data-fallback="${image.fallback}" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=this.dataset.fallback||'images/logo.png'">
     </button>`).join("");
   dialogThumbs.hidden = images.length <= 1;
   const thumbnailButtons = dialogThumbs.querySelectorAll(".dialog-thumb");
-  selectDialogImage(images[0] || "images/logo.png", product.name, thumbnailButtons[0]);
+  const firstImage = images[0] || { url: "images/logo.png", fallback: "images/logo.png" };
+  selectDialogImage(firstImage.url, product.name, thumbnailButtons[0], firstImage.fallback);
   thumbnailButtons.forEach(button => {
-    button.addEventListener("click", () => selectDialogImage(images[Number(button.dataset.image)], product.name, button));
+    button.addEventListener("click", () => {
+      const image = images[Number(button.dataset.image)];
+      selectDialogImage(image.url, product.name, button, image.fallback);
+    });
   });
   productDialog.showModal();
   productDialog.scrollTop = 0;
