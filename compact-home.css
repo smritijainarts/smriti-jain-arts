@@ -240,7 +240,7 @@ section {
 
 .section {
   padding: 50px 7vw;
-  background: #efddcd;
+  background: #fffaf5;
 }
 
 .section-head {
@@ -472,7 +472,7 @@ section {
   grid-template-columns: minmax(0, 1100px);
   justify-content: center;
   padding: 30px 8vw;
-  background: #efddcd;
+  background: #fffaf5;
 }
 
 .about-card {
