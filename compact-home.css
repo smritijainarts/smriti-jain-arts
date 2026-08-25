@@ -56,6 +56,15 @@ section {
   margin-top: 16px;
 }
 
+.hero-social-prompt {
+  max-width: 500px;
+  margin: 13px 0 0;
+  color: #685c65;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
 .hero-social-links {
   display: flex;
   align-items: center;
