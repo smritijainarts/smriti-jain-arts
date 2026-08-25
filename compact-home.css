@@ -56,7 +56,7 @@ section {
   margin-top: 16px;
 }
 
-.hero-social-prompt {
+.social-follow-prompt {
   max-width: 500px;
   margin: 13px 0 0;
   color: #685c65;
@@ -65,14 +65,14 @@ section {
   line-height: 1.5;
 }
 
-.hero-social-links {
+.social-icon-links {
   display: flex;
   align-items: center;
   gap: 9px;
   margin-top: 13px;
 }
 
-.hero-social {
+.social-icon {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -84,27 +84,72 @@ section {
   transition: transform .2s ease, box-shadow .2s ease;
 }
 
-.hero-social:hover,
-.hero-social:focus-visible {
+.social-icon:hover,
+.social-icon:focus-visible {
+  color: #fff;
   transform: translateY(-2px);
   box-shadow: 0 9px 18px rgba(45, 36, 48, .2);
 }
 
-.hero-social.instagram {
-  background: #c4577e;
-  font-size: 21px;
-  line-height: 1;
+.social-icon.instagram {
+  background: linear-gradient(135deg, #833ab4, #e1306c 55%, #fcb045);
 }
 
-.hero-social.facebook {
+.social-icon.facebook {
   background: #1877f2;
-  font: 700 19px Arial, sans-serif;
 }
 
-.hero-social.youtube {
+.social-icon.youtube {
   background: #e62117;
-  font-size: 12px;
-  padding-left: 2px;
+}
+
+.brand-icon {
+  position: relative;
+  display: block;
+}
+
+.instagram-icon {
+  width: 16px;
+  height: 16px;
+  border: 2px solid currentColor;
+  border-radius: 5px;
+}
+
+.instagram-icon::before {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+  content: "";
+  transform: translate(-50%, -50%);
+}
+
+.instagram-icon::after {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 2.5px;
+  height: 2.5px;
+  border-radius: 50%;
+  background: currentColor;
+  content: "";
+}
+
+.facebook-icon {
+  font: 700 20px/1 Arial, sans-serif;
+  transform: translateY(2px);
+}
+
+.youtube-icon {
+  width: 0;
+  height: 0;
+  margin-left: 2px;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 8px solid currentColor;
 }
 
 .hero-actions .btn {
@@ -450,6 +495,22 @@ section {
   margin-bottom: 0;
   font-size: 13px;
   line-height: 1.55;
+}
+
+.about-follow {
+  margin-top: 17px;
+}
+
+.about-follow .social-follow-prompt {
+  margin-top: 0;
+}
+
+.about-card .social-icon {
+  display: inline-flex;
+  margin-top: 0;
+  border-bottom: 0;
+  color: #fff;
+  font-weight: inherit;
 }
 
 .about-social-block {
