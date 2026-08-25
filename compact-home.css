@@ -56,6 +56,48 @@ section {
   margin-top: 16px;
 }
 
+.hero-social-links {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-top: 13px;
+}
+
+.hero-social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: #fff;
+  box-shadow: 0 6px 14px rgba(45, 36, 48, .13);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+
+.hero-social:hover,
+.hero-social:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 9px 18px rgba(45, 36, 48, .2);
+}
+
+.hero-social.instagram {
+  background: #c4577e;
+  font-size: 21px;
+  line-height: 1;
+}
+
+.hero-social.facebook {
+  background: #1877f2;
+  font: 700 19px Arial, sans-serif;
+}
+
+.hero-social.youtube {
+  background: #e62117;
+  font-size: 12px;
+  padding-left: 2px;
+}
+
 .hero-actions .btn {
   box-shadow: 0 10px 24px rgba(45, 36, 48, .12);
   transition: transform .2s ease, box-shadow .2s ease;
