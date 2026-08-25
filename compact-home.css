@@ -20,8 +20,8 @@ section {
 }
 
 .hero {
-  min-height: 520px;
-  padding: 42px 8vw;
+  min-height: 460px;
+  padding: 32px 8vw;
   gap: 4vw;
   background:
     radial-gradient(circle at 92% 18%, rgba(245, 214, 111, .18), transparent 28%),
@@ -143,13 +143,13 @@ section {
 }
 
 .section {
-  padding: 68px 7vw;
+  padding: 50px 7vw;
 }
 
 .section-head {
   align-items: flex-start;
   gap: 60px;
-  margin-bottom: 24px;
+  margin-bottom: 18px;
 }
 
 .section-head > div {
@@ -157,14 +157,14 @@ section {
 }
 
 .section-head h2 {
-  font-size: 38px;
+  font-size: 34px;
   line-height: 1.08;
 }
 
 .section-head > p {
-  margin: 22px 0 0;
-  font-size: 15px;
-  line-height: 1.7;
+  margin: 16px 0 0;
+  font-size: 13px;
+  line-height: 1.55;
 }
 
 .product-search-wrap {
@@ -372,25 +372,43 @@ section {
 }
 
 .about {
-  grid-template-columns: minmax(0, 760px);
+  grid-template-columns: minmax(0, 1100px);
   justify-content: center;
-  padding: 44px 9vw;
-  gap: 4vw;
+  padding: 30px 8vw;
 }
 
 .about-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 36px;
   width: 100%;
 }
 
+.about-copy {
+  max-width: 610px;
+}
+
 .about-card h2 {
-  font-size: 31px;
+  font-size: 28px;
   line-height: 1.08;
 }
 
 .about-card p:not(.eyebrow) {
-  max-width: 500px;
-  font-size: 14.5px;
-  line-height: 1.7;
+  max-width: 580px;
+  margin-bottom: 0;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.about-social-block {
+  flex: 0 0 auto;
+}
+
+.about-social-block > strong {
+  display: block;
+  margin-bottom: 9px;
+  font: 700 16px "Playfair Display", serif;
 }
 
 .about-card .handmade-value {
@@ -413,7 +431,7 @@ section {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 18px;
+  margin-top: 0;
 }
 
 .about-social-links a,
@@ -421,11 +439,11 @@ section {
   display: inline-flex;
   align-items: center;
   gap: 7px;
-  padding: 8px 12px;
+  padding: 9px 13px;
   border: 1px solid #e6d7dd;
   border-radius: 999px;
   background: rgba(255, 255, 255, .72);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   line-height: 1;
   transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
@@ -487,39 +505,51 @@ section {
 }
 
 .how {
-  padding: 68px 8vw;
+  padding: 38px 8vw;
 }
 
 .how h2 {
-  font-size: 38px;
+  font-size: 30px;
   line-height: 1.08;
 }
 
 .steps {
-  margin-top: 30px;
-  gap: 16px;
+  max-width: 1040px;
+  margin: 18px auto 0;
+  gap: 12px;
 }
 
 .steps article {
-  min-height: 170px;
-  padding: 22px;
+  display: flex;
+  align-items: center;
+  min-height: 0;
+  gap: 13px;
+  padding: 14px 16px;
+}
+
+.steps article > span {
+  font-size: 24px;
+  line-height: 1;
 }
 
 .steps h3 {
+  margin: 0 0 2px;
+  font-size: 17px;
   line-height: 1.25;
 }
 
 .steps p {
-  line-height: 1.65;
+  font-size: 12px;
+  line-height: 1.4;
 }
 
 .contact {
-  margin-bottom: 38px;
-  padding: 32px 5vw;
+  margin-bottom: 28px;
+  padding: 26px 5vw;
 }
 
 .contact h2 {
-  font-size: 32px;
+  font-size: 28px;
   line-height: 1.08;
 }
 
@@ -610,6 +640,12 @@ footer strong {
 
   .section-head > p {
     margin-top: 14px;
+  }
+
+  .about-card {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 18px;
   }
 }
 

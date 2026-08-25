@@ -10,9 +10,9 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-<link rel="stylesheet" href="compact-home.css?v=29">
+<link rel="stylesheet" href="compact-home.css?v=30">
 <link rel="stylesheet" href="product-detail.css?v=13">
-<link rel="stylesheet" href="reviews.css?v=1">
+<link rel="stylesheet" href="reviews.css?v=2">
 </head>
 <body>
 <header class="topbar">
@@ -27,9 +27,9 @@
   <nav id="nav">
     <a href="#home">Home</a>
     <a href="#collection">Collection</a>
-    <a href="#reviews">Reviews</a>
     <a href="#about">About</a>
     <a href="#contact">Contact</a>
+    <a href="#reviews">Reviews</a>
   </nav>
   <button id="menuBtn" type="button" aria-label="Open menu" aria-controls="nav" aria-expanded="false">☰</button>
 </header>
@@ -51,8 +51,8 @@
 
 <section id="collection" class="section">
   <div class="section-head">
-    <div><p class="eyebrow">OUR COLLECTION</p><h2>Made by hand. Made to be loved.</h2></div>
-    <p>Tap any category to filter the collection, then open a product to view its photos, details and ordering option.</p>
+    <div><p class="eyebrow">OUR COLLECTION</p><h2>Browse the collection.</h2></div>
+    <p>Filter by category or open a product for photos, details and ordering.</p>
   </div>
   <div class="catalogue-controls">
     <div class="catalogue-toolbar">
@@ -75,23 +75,46 @@
 
 <section id="about" class="about">
   <div class="about-card">
-    <p class="eyebrow">SMRITI JAIN ARTS</p>
-    <h2>Creative details,<br>made with care.</h2>
-    <p>Smriti Jain Arts creates colourful handmade products that bring warmth, charm and personality into everyday spaces. Each piece is crafted with attention to detail and a love for creative expression.</p>
-    <p class="handmade-value">The beauty of a handmade gift lies not only in its size, but in the time, skill and thoughtful effort behind every detail—making each creation genuinely unique.</p>
-    <div class="about-social-links" aria-label="Follow Smriti Jain Arts">
-      <a class="social-instagram" href="https://www.instagram.com/smritijainarts" target="_blank" rel="noopener">Instagram ↗</a>
-      <a class="social-facebook" href="https://www.facebook.com/smritijainarts/" target="_blank" rel="noopener">Facebook ↗</a>
-      <a class="social-youtube" href="https://www.youtube.com/@SmritiJainArts" target="_blank" rel="noopener">YouTube ↗</a>
+    <div class="about-copy">
+      <p class="eyebrow">CREATED WITH CARE</p>
+      <h2>Creative details, made by hand.</h2>
+      <p>Colourful, thoughtfully handcrafted pieces designed to add warmth and personality to everyday life.</p>
+    </div>
+    <div class="about-social-block">
+      <strong>Follow Smriti Jain Arts</strong>
+      <div class="about-social-links" aria-label="Follow Smriti Jain Arts">
+        <a class="social-instagram" href="https://www.instagram.com/smritijainarts" target="_blank" rel="noopener">Instagram ↗</a>
+        <a class="social-facebook" href="https://www.facebook.com/smritijainarts/" target="_blank" rel="noopener">Facebook ↗</a>
+        <a class="social-youtube" href="https://www.youtube.com/@SmritiJainArts" target="_blank" rel="noopener">YouTube ↗</a>
+      </div>
     </div>
   </div>
 </section>
 
+<section class="how">
+  <p class="eyebrow">HOW TO ORDER</p>
+  <h2>Three easy steps.</h2>
+  <div class="steps">
+    <article><span>01</span><div><h3>Choose</h3><p>Open the product you like.</p></div></article>
+    <article><span>02</span><div><h3>Message</h3><p>Tap the WhatsApp order button.</p></div></article>
+    <article><span>03</span><div><h3>Confirm</h3><p>Discuss availability and delivery.</p></div></article>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div>
+    <p class="eyebrow">CUSTOM ORDERS WELCOME</p>
+    <h2>Have something special in mind?</h2>
+    <p>Message us for custom colours and thoughtful gifting ideas.</p>
+  </div>
+  <a class="btn light" href="https://wa.me/917666767484?text=Hi%20Smriti%20Jain!%20I%20want%20to%20discuss%20a%20custom%20handmade%20order." target="_blank" rel="noopener">Chat on WhatsApp →</a>
+</section>
+
 <section id="reviews" class="reviews-section" aria-labelledby="reviewsHeading">
   <div class="reviews-intro">
-    <p class="eyebrow">CUSTOMER LOVE</p>
-    <h2 id="reviewsHeading">Made by hand.<br>Loved from the heart.</h2>
-    <p>Read what customers have shared, or leave a few words about your Smriti Jain Arts creation.</p>
+    <p class="eyebrow">CUSTOMER REVIEWS</p>
+    <h2 id="reviewsHeading">Customer love</h2>
+    <p>Read a review or share your experience.</p>
   </div>
   <div class="reviews-layout">
     <div class="review-showcase" aria-label="Customer reviews">
@@ -109,9 +132,8 @@
 
     <form id="reviewForm" class="review-form">
       <div class="review-form-heading">
-        <p class="eyebrow">SHARE YOUR EXPERIENCE</p>
         <h3>Leave a review</h3>
-        <p>Your review will appear after it has been checked and approved.</p>
+        <p>Reviews appear after approval.</p>
       </div>
       <label>
         <span>Your name <b aria-hidden="true">*</b></span>
@@ -135,7 +157,7 @@
       </label>
       <label>
         <span>Your review <b aria-hidden="true">*</b></span>
-        <textarea id="reviewText" name="review" rows="5" minlength="10" maxlength="500" required></textarea>
+        <textarea id="reviewText" name="review" rows="3" minlength="10" maxlength="500" required></textarea>
         <small id="reviewCount" class="review-count">0 / 500</small>
       </label>
       <label class="review-honeypot" aria-hidden="true">
@@ -146,25 +168,6 @@
       <p id="reviewMessage" class="review-message" role="status"></p>
     </form>
   </div>
-</section>
-
-<section class="how">
-  <p class="eyebrow">HOW TO ORDER</p>
-  <h2>Simple and personal.</h2>
-  <div class="steps">
-    <article><span>01</span><h3>Choose a product</h3><p>Browse the collection and select the handmade piece you like.</p></article>
-    <article><span>02</span><h3>Message on WhatsApp</h3><p>The product name and price are pre-filled for you automatically.</p></article>
-    <article><span>03</span><h3>Confirm your order</h3><p>Availability, payment and delivery can be discussed directly.</p></article>
-  </div>
-</section>
-
-<section id="contact" class="contact">
-  <div>
-    <p class="eyebrow">CUSTOM ORDERS WELCOME</p>
-    <h2>Have something special in mind?</h2>
-    <p>Message us for custom colours and thoughtful gifting ideas.</p>
-  </div>
-  <a class="btn light" href="https://wa.me/917666767484?text=Hi%20Smriti%20Jain!%20I%20want%20to%20discuss%20a%20custom%20handmade%20order." target="_blank" rel="noopener">Chat on WhatsApp →</a>
 </section>
 </main>
 
