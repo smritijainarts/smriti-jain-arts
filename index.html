@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="compact-home.css?v=28">
 <link rel="stylesheet" href="product-detail.css?v=13">
+<link rel="stylesheet" href="reviews.css?v=1">
 </head>
 <body>
 <header class="topbar">
@@ -26,6 +27,7 @@
   <nav id="nav">
     <a href="#home">Home</a>
     <a href="#collection">Collection</a>
+    <a href="#reviews">Reviews</a>
     <a href="#about">About</a>
     <a href="#contact">Contact</a>
   </nav>
@@ -82,6 +84,67 @@
       <a class="social-facebook" href="https://www.facebook.com/smritijainarts/" target="_blank" rel="noopener">Facebook ↗</a>
       <a class="social-youtube" href="https://www.youtube.com/@SmritiJainArts" target="_blank" rel="noopener">YouTube ↗</a>
     </div>
+  </div>
+</section>
+
+<section id="reviews" class="reviews-section" aria-labelledby="reviewsHeading">
+  <div class="reviews-intro">
+    <p class="eyebrow">CUSTOMER LOVE</p>
+    <h2 id="reviewsHeading">Made by hand.<br>Loved from the heart.</h2>
+    <p>Read what customers have shared, or leave a few words about your Smriti Jain Arts creation.</p>
+  </div>
+  <div class="reviews-layout">
+    <div class="review-showcase" aria-label="Customer reviews">
+      <div id="reviewSlide" class="review-slide" aria-live="polite">
+        <div class="review-stars" aria-label="5 out of 5 stars">★★★★★</div>
+        <blockquote>Customer reviews will appear here after they are approved.</blockquote>
+        <p class="review-byline">Your kind words mean a lot.</p>
+      </div>
+      <div id="reviewControls" class="review-controls" hidden>
+        <button id="reviewPrevious" type="button" aria-label="Previous review">←</button>
+        <span id="reviewPosition" aria-live="off"></span>
+        <button id="reviewNext" type="button" aria-label="Next review">→</button>
+      </div>
+    </div>
+
+    <form id="reviewForm" class="review-form">
+      <div class="review-form-heading">
+        <p class="eyebrow">SHARE YOUR EXPERIENCE</p>
+        <h3>Leave a review</h3>
+        <p>Your review will appear after it has been checked and approved.</p>
+      </div>
+      <label>
+        <span>Your name <b aria-hidden="true">*</b></span>
+        <input id="reviewName" name="name" type="text" minlength="2" maxlength="60" autocomplete="name" required>
+      </label>
+      <label>
+        <span>Product <small>(optional)</small></span>
+        <select id="reviewProduct" name="product">
+          <option value="">General review</option>
+        </select>
+      </label>
+      <label>
+        <span>Rating <b aria-hidden="true">*</b></span>
+        <select id="reviewRating" name="rating" required>
+          <option value="5">★★★★★ — Excellent</option>
+          <option value="4">★★★★☆ — Very good</option>
+          <option value="3">★★★☆☆ — Good</option>
+          <option value="2">★★☆☆☆ — Fair</option>
+          <option value="1">★☆☆☆☆ — Needs improvement</option>
+        </select>
+      </label>
+      <label>
+        <span>Your review <b aria-hidden="true">*</b></span>
+        <textarea id="reviewText" name="review" rows="5" minlength="10" maxlength="500" required></textarea>
+        <small id="reviewCount" class="review-count">0 / 500</small>
+      </label>
+      <label class="review-honeypot" aria-hidden="true">
+        <span>Website</span>
+        <input name="website" type="text" tabindex="-1" autocomplete="off">
+      </label>
+      <button id="reviewSubmit" class="review-submit" type="submit">Submit review</button>
+      <p id="reviewMessage" class="review-message" role="status"></p>
+    </form>
   </div>
 </section>
 
@@ -142,6 +205,6 @@
   <small>© 2026 Smriti Jain Arts</small>
 </footer>
 
-<script src="script.js?v=35"></script>
+<script src="script.js?v=36"></script>
 </body>
 </html>

@@ -4,6 +4,8 @@ const SHEET_ID = "1Nk2EYh-vV5psAIMAXXmqzhGmGDD3RHwVCUb5yg_muaw";
 // be filtered or sorted without hiding catalogue rows from website visitors.
 const SHEET_NAME = "Website Data";
 const SHEET_QUERY_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?sheet=${encodeURIComponent(SHEET_NAME)}`;
+// Paste the deployed Google Apps Script /exec URL here after the one-time setup.
+const REVIEWS_API_URL = "https://script.google.com/macros/s/AKfycbx_cxkT1_COjXje_neUav6nzp_el75DPcDkDGLq5uCdrgilxM6snoWbYBZivPu36Y1sNw/exec";
 
 let products = [];
 let categories = ["All"];
@@ -456,6 +458,7 @@ async function loadProducts() {
     if (!heroInitialized) updateHeroImages(products);
     renderFilters();
     renderProducts();
+    populateReviewProducts();
   } catch {
     products = LOCAL_PRODUCTS;
     categories = orderCategories(products.flatMap(p => splitCategories(p.category)));
@@ -463,6 +466,7 @@ async function loadProducts() {
     if (!heroInitialized) updateHeroImages(products);
     renderFilters();
     renderProducts();
+    populateReviewProducts();
   }
 }
 
@@ -650,3 +654,169 @@ nav.querySelectorAll("a").forEach(a => a.addEventListener("click", () => {
 document.querySelectorAll('a[href^="#"]:not(#nav a)').forEach(link => {
   link.addEventListener("click", () => clearProductSearch());
 });
+
+const reviewForm = document.getElementById("reviewForm");
+const reviewProduct = document.getElementById("reviewProduct");
+const reviewText = document.getElementById("reviewText");
+const reviewCount = document.getElementById("reviewCount");
+const reviewSubmit = document.getElementById("reviewSubmit");
+const reviewMessage = document.getElementById("reviewMessage");
+const reviewSlide = document.getElementById("reviewSlide");
+const reviewControls = document.getElementById("reviewControls");
+const reviewPrevious = document.getElementById("reviewPrevious");
+const reviewNext = document.getElementById("reviewNext");
+const reviewPosition = document.getElementById("reviewPosition");
+const reviewShowcase = document.querySelector(".review-showcase");
+let approvedReviews = [];
+let reviewIndex = 0;
+let reviewTimer = null;
+
+function reviewsApiConfigured() {
+  return /^https:\/\/script\.google\.com\/macros\/s\/.+\/exec(?:\?|$)/.test(REVIEWS_API_URL);
+}
+
+function populateReviewProducts() {
+  if (!reviewProduct) return;
+  const previousValue = reviewProduct.value;
+  const names = [...new Set(products.map(product => String(product.name || "").trim()).filter(Boolean))]
+    .sort((a, b) => a.localeCompare(b));
+  reviewProduct.replaceChildren(new Option("General review", ""));
+  names.forEach(name => reviewProduct.add(new Option(name, name)));
+  if (names.includes(previousValue)) reviewProduct.value = previousValue;
+}
+
+function formatReviewDate(value) {
+  if (!value) return "";
+  const date = new Date(value);
+  return Number.isNaN(date.getTime()) ? "" : date.toLocaleDateString("en-IN", { month: "short", year: "numeric" });
+}
+
+function renderReviewSlide() {
+  const review = approvedReviews[reviewIndex];
+  if (!review) return;
+  reviewSlide.replaceChildren();
+  reviewSlide.classList.remove("review-slide");
+  void reviewSlide.offsetWidth;
+  reviewSlide.classList.add("review-slide");
+
+  const stars = document.createElement("div");
+  const rating = Math.max(1, Math.min(5, Number(review.rating) || 5));
+  stars.className = "review-stars";
+  stars.textContent = `${"★".repeat(rating)}${"☆".repeat(5 - rating)}`;
+  stars.setAttribute("aria-label", `${rating} out of 5 stars`);
+
+  const quote = document.createElement("blockquote");
+  quote.textContent = review.review;
+
+  const byline = document.createElement("p");
+  byline.className = "review-byline";
+  byline.append(document.createTextNode(`— ${review.name || "Customer"}`));
+  const details = [review.product, formatReviewDate(review.date)].filter(Boolean).join(" · ");
+  if (details) {
+    const detail = document.createElement("span");
+    detail.className = "review-product";
+    detail.textContent = ` · ${details}`;
+    byline.append(detail);
+  }
+
+  reviewSlide.append(stars, quote, byline);
+  reviewPosition.textContent = `${reviewIndex + 1} / ${approvedReviews.length}`;
+}
+
+function showReview(offset) {
+  if (!approvedReviews.length) return;
+  reviewIndex = (reviewIndex + offset + approvedReviews.length) % approvedReviews.length;
+  renderReviewSlide();
+}
+
+function stopReviewTimer() {
+  if (reviewTimer) clearInterval(reviewTimer);
+  reviewTimer = null;
+}
+
+function startReviewTimer() {
+  stopReviewTimer();
+  if (approvedReviews.length > 1 && !globalThis.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
+    reviewTimer = setInterval(() => showReview(1), 7000);
+  }
+}
+
+async function loadApprovedReviews() {
+  if (!reviewsApiConfigured()) return;
+  try {
+    const response = await fetch(`${REVIEWS_API_URL}?t=${Date.now()}`, { cache: "no-store" });
+    if (!response.ok) throw new Error("Review service unavailable");
+    const data = await response.json();
+    approvedReviews = Array.isArray(data.reviews) ? data.reviews.filter(review => review?.review) : [];
+    if (!approvedReviews.length) return;
+    reviewIndex = 0;
+    reviewControls.hidden = approvedReviews.length <= 1;
+    renderReviewSlide();
+    startReviewTimer();
+  } catch (error) {
+    console.warn("Reviews could not be loaded:", error);
+  }
+}
+
+reviewText?.addEventListener("input", () => {
+  reviewCount.textContent = `${reviewText.value.length} / 500`;
+});
+
+reviewPrevious?.addEventListener("click", () => {
+  showReview(-1);
+  startReviewTimer();
+});
+
+reviewNext?.addEventListener("click", () => {
+  showReview(1);
+  startReviewTimer();
+});
+
+reviewShowcase?.addEventListener("mouseenter", stopReviewTimer);
+reviewShowcase?.addEventListener("mouseleave", startReviewTimer);
+reviewShowcase?.addEventListener("focusin", stopReviewTimer);
+reviewShowcase?.addEventListener("focusout", startReviewTimer);
+
+reviewForm?.addEventListener("submit", async event => {
+  event.preventDefault();
+  reviewMessage.classList.remove("is-error");
+  if (!reviewsApiConfigured()) {
+    reviewMessage.textContent = "The review form is being connected. Please try again shortly.";
+    reviewMessage.classList.add("is-error");
+    return;
+  }
+
+  const formData = new FormData(reviewForm);
+  const payload = {
+    name: String(formData.get("name") || "").trim(),
+    product: String(formData.get("product") || "").trim(),
+    rating: Number(formData.get("rating")),
+    review: String(formData.get("review") || "").trim(),
+    website: String(formData.get("website") || "").trim()
+  };
+
+  reviewSubmit.disabled = true;
+  reviewSubmit.textContent = "Submitting…";
+  reviewMessage.textContent = "";
+  try {
+    const response = await fetch(REVIEWS_API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+      body: JSON.stringify(payload),
+      redirect: "follow"
+    });
+    const result = await response.json();
+    if (!response.ok || !result.ok) throw new Error(result.message || "Submission failed");
+    reviewForm.reset();
+    reviewCount.textContent = "0 / 500";
+    reviewMessage.textContent = "Thank you! Your review was submitted for approval.";
+  } catch (error) {
+    reviewMessage.textContent = error.message || "We could not submit your review. Please try again.";
+    reviewMessage.classList.add("is-error");
+  } finally {
+    reviewSubmit.disabled = false;
+    reviewSubmit.textContent = "Submit review";
+  }
+});
+
+loadApprovedReviews();

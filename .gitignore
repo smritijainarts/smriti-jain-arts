@@ -1,0 +1,3 @@
+# Local build and verification files (not part of the website)
+.codex/reviews-sheet/
+outputs/reviews-setup/
