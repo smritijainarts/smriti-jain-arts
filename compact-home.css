@@ -471,6 +471,7 @@ section {
   grid-template-columns: minmax(0, 1100px);
   justify-content: center;
   padding: 30px 8vw;
+  background: #efddcd;
 }
 
 .about-card {
