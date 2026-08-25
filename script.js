@@ -34,6 +34,15 @@ const heroImages = [...document.querySelectorAll(".hero-shot img")];
 const heroCollage = document.querySelector?.(".hero-collage");
 let heroInitialized = false;
 
+// Only these products may appear in the three-image homepage collage.
+// Each product's primary image is the first image URL from the product sheet.
+const HERO_PRODUCT_IDS = new Set([
+  "001", "002", "003", "004", "007", "008", "009", "010", "011", "014", "015",
+  "024", "025", "026", "027", "028", "029", "032", "033", "034", "036"
+]);
+const HERO_CACHE_KEY = "sjaHeroProductsV2";
+const HERO_HISTORY_KEY = "sjaHeroProductIdsV2";
+
 // Keep the shop usable when Google Sheets is private, temporarily unavailable,
 // or blocked by a visitor's network. Sheet data replaces this list when the
 // public CSV endpoint is available.
@@ -102,7 +111,11 @@ function getImages(product) {
 }
 
 function chooseHeroProducts(sourceProducts, previousIds = [], count = 3) {
-  const candidates = sourceProducts.filter(product => product?.image && product.image !== "images/logo.png");
+  const candidates = sourceProducts.filter(product =>
+    HERO_PRODUCT_IDS.has(String(product?.id || "").padStart(3, "0")) &&
+    product?.image &&
+    product.image !== "images/logo.png"
+  );
   const freshCandidates = candidates.filter(product => !previousIds.includes(String(product.id)));
   const pool = freshCandidates.length >= count ? freshCandidates : candidates;
   const shuffled = [...pool];
@@ -117,7 +130,7 @@ function updateHeroImages(sourceProducts = products) {
   if (!heroImages.length) return;
   let previousIds = [];
   try {
-    previousIds = JSON.parse(globalThis.sessionStorage?.getItem("sjaHeroProductIds") || "[]");
+    previousIds = JSON.parse(globalThis.sessionStorage?.getItem(HERO_HISTORY_KEY) || "[]");
   } catch {
     previousIds = [];
   }
@@ -127,7 +140,7 @@ function updateHeroImages(sourceProducts = products) {
     heroImages[index].alt = product.name;
   });
   try {
-    globalThis.sessionStorage?.setItem("sjaHeroProductIds", JSON.stringify(selected.map(product => String(product.id))));
+    globalThis.sessionStorage?.setItem(HERO_HISTORY_KEY, JSON.stringify(selected.map(product => String(product.id))));
   } catch {
     // The rotating hero still works when storage is unavailable.
   }
@@ -139,7 +152,7 @@ function updateHeroImages(sourceProducts = products) {
 
 function readCachedHeroProducts() {
   try {
-    const cached = JSON.parse(globalThis.localStorage?.getItem("sjaHeroProducts") || "[]");
+    const cached = JSON.parse(globalThis.localStorage?.getItem(HERO_CACHE_KEY) || "[]");
     return Array.isArray(cached) ? cached.filter(product => product?.id && product?.image) : [];
   } catch {
     return [];
@@ -149,7 +162,7 @@ function readCachedHeroProducts() {
 function cacheHeroProducts(sourceProducts) {
   try {
     const compactProducts = sourceProducts.map(({ id, name, image }) => ({ id, name, image }));
-    globalThis.localStorage?.setItem("sjaHeroProducts", JSON.stringify(compactProducts));
+    globalThis.localStorage?.setItem(HERO_CACHE_KEY, JSON.stringify(compactProducts));
   } catch {
     // The local fallback still prevents static-image flashing when storage is unavailable.
   }
