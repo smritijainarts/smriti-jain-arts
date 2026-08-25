@@ -749,7 +749,7 @@ function stopReviewTimer() {
 function startReviewTimer() {
   stopReviewTimer();
   if (approvedReviews.length > 1 && !globalThis.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
-    reviewTimer = setInterval(() => showReview(1), 7000);
+    reviewTimer = setInterval(() => showReview(1), 4000);
   }
 }
 
