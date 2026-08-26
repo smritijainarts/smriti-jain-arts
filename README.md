@@ -47,6 +47,20 @@ For NEW products, the Image URL must be a direct, publicly readable image URL. A
 Clicking a product opens its detailed product view. `Image 1 URL` is used as the
 main photo; `Image 2 URL` through `Image 5 URL` appear as selectable thumbnails.
 
+### Product image preparation
+
+Whenever new product photos are added, run `tools/generate_watermarked_images.py`
+before committing them. This single batch step now:
+
+1. Resizes oversized source photos to a maximum edge of 1800 pixels while
+   preserving their existing filenames.
+2. Creates the watermarked WebP images used in the product detail and zoom view.
+3. Creates a 600-pixel `thumbnail.webp` from the image ending in `-1`.
+
+Photos already at or below 1800 pixels are not recompressed, so rerunning the
+tool does not progressively reduce their quality. Keep full-resolution camera
+originals outside this website repository if archival copies are required.
+
 ## Publishing the website
 This ZIP still needs to be deployed to a web host. Once deployed, you normally do NOT re-upload the website when changing names, prices, descriptions, categories, availability, or adding rows. Those changes come from Google Sheets.
 

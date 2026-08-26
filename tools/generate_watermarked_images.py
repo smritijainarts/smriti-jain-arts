@@ -1,4 +1,4 @@
-"""Create consistent watermarked website copies without changing originals."""
+"""Optimize product photos and create website-ready watermarked copies."""
 
 from __future__ import annotations
 
@@ -15,6 +15,7 @@ SKIPPED_FOLDERS = {"005-clutcher-holder"}
 SOURCE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
 MAX_WEBSITE_EDGE = 1800
 THUMBNAIL_EDGE = 600
+SOURCE_JPEG_QUALITY = 85
 
 
 def source_images(folder: Path) -> list[Path]:
@@ -25,6 +26,40 @@ def source_images(folder: Path) -> list[Path]:
         and path.name != "thumbnail.webp"
         and path.suffix.lower() in SOURCE_EXTENSIONS
     )
+
+
+def optimize_source(source: Path) -> tuple[bool, int]:
+    """Resize an oversized source once, preserving its filename and format."""
+    original_bytes = source.stat().st_size
+    temporary = source.with_name(f".{source.stem}.optimizing{source.suffix}")
+
+    with Image.open(source) as image:
+        corrected = ImageOps.exif_transpose(image)
+        if max(corrected.size) <= MAX_WEBSITE_EDGE:
+            return False, 0
+
+        optimized = corrected.copy()
+        optimized.thumbnail(
+            (MAX_WEBSITE_EDGE, MAX_WEBSITE_EDGE), Image.Resampling.LANCZOS
+        )
+
+        suffix = source.suffix.lower()
+        if suffix in {".jpg", ".jpeg"}:
+            optimized.convert("RGB").save(
+                temporary,
+                "JPEG",
+                quality=SOURCE_JPEG_QUALITY,
+                optimize=True,
+                progressive=True,
+            )
+        elif suffix == ".webp":
+            optimized.save(temporary, "WEBP", quality=84, method=6)
+        else:
+            optimized.save(temporary, "PNG", optimize=True)
+        optimized.close()
+
+    temporary.replace(source)
+    return True, max(0, original_bytes - source.stat().st_size)
 
 
 def fitted_font(image_width: int, image_height: int) -> ImageFont.FreeTypeFont:
@@ -76,6 +111,8 @@ def main() -> None:
 
     generated = 0
     thumbnails = 0
+    optimized_sources = 0
+    source_bytes_saved = 0
     output_bytes = 0
 
     for folder in sorted(path for path in IMAGES_DIR.iterdir() if path.is_dir()):
@@ -86,7 +123,14 @@ def main() -> None:
         output_dir.mkdir(exist_ok=True)
         primary_output: Path | None = None
 
-        for source in source_images(folder):
+        sources = source_images(folder)
+        for source in sources:
+            optimized, bytes_saved = optimize_source(source)
+            if optimized:
+                optimized_sources += 1
+                source_bytes_saved += bytes_saved
+
+        for source in sources:
             output = output_dir / f"{source.stem}.webp"
             with Image.open(source) as image:
                 watermarked = add_watermark(image)
@@ -106,8 +150,10 @@ def main() -> None:
             thumbnails += 1
 
     print(
+        f"OPTIMIZED_SOURCES={optimized_sources} "
+        f"SOURCE_MB_SAVED={source_bytes_saved / 1048576:.1f} "
         f"WATERMARKED={generated} THUMBNAILS={thumbnails} "
-        f"OUTPUT_MB={output_bytes / 1048576:.1f}"
+        f"WATERMARKED_MB={output_bytes / 1048576:.1f}"
     )
 
 
