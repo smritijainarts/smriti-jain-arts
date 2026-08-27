@@ -15,6 +15,16 @@ let sortMode = "latest";
 let currentPage = 1;
 let showAllProducts = false;
 const PRODUCTS_PER_PAGE = 10;
+// Curated order for the initial public collection. Products added after this
+// launch (IDs above 043) still appear automatically at the top, newest first.
+const CURATED_LAUNCH_ORDER = [
+  "036", "039", "001", "043", "015", "029", "004", "038", "027",
+  "034", "032", "014", "021", "009", "007", "008", "003", "041"
+];
+const CURATED_LAUNCH_POSITION = new Map(
+  CURATED_LAUNCH_ORDER.map((id, index) => [id, index])
+);
+const CURATED_LAUNCH_LAST_ID = 43;
 const CATEGORY_PRIORITY = [
   "Home Decor",
   "Bags & Pouches",
@@ -330,6 +340,20 @@ function sortProductsLatestFirst(list) {
   return [...list].sort((a, b) => {
     const aId = Number.parseInt(String(a.id || "").replace(/\D/g, ""), 10);
     const bId = Number.parseInt(String(b.id || "").replace(/\D/g, ""), 10);
+
+    // Keep future additions automatic, but honour the owner's chosen order for
+    // the first public collection before showing other older products.
+    const aIsFuture = Number.isFinite(aId) && aId > CURATED_LAUNCH_LAST_ID;
+    const bIsFuture = Number.isFinite(bId) && bId > CURATED_LAUNCH_LAST_ID;
+    if (aIsFuture !== bIsFuture) return aIsFuture ? -1 : 1;
+
+    const aPosition = CURATED_LAUNCH_POSITION.get(String(a.id || "").padStart(3, "0"));
+    const bPosition = CURATED_LAUNCH_POSITION.get(String(b.id || "").padStart(3, "0"));
+    const aIsCurated = aPosition !== undefined;
+    const bIsCurated = bPosition !== undefined;
+    if (aIsCurated !== bIsCurated) return aIsCurated ? -1 : 1;
+    if (aIsCurated && bIsCurated) return aPosition - bPosition;
+
     if (Number.isFinite(aId) && Number.isFinite(bId) && aId !== bId) return bId - aId;
     return String(b.id || "").localeCompare(String(a.id || ""), undefined, { numeric: true });
   });
