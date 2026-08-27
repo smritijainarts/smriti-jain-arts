@@ -16,9 +16,11 @@ WATERMARK_TEXT = "Smriti Jain Arts"
 # It is intentionally excluded until the photos have been grouped into a product folder.
 SKIPPED_FOLDERS = {"005-clutcher-holder", "incoming"}
 SOURCE_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
-MAX_WEBSITE_EDGE = 1800
+# 1400px keeps product photos crisp in the zoomed product dialog while
+# substantially reducing download size and repository storage.
+MAX_WEBSITE_EDGE = 1400
 THUMBNAIL_EDGE = 600
-SOURCE_JPEG_QUALITY = 85
+SOURCE_JPEG_QUALITY = 80
 
 
 def source_images(folder: Path) -> list[Path]:
@@ -162,7 +164,7 @@ def main() -> None:
             temporary_output = output_dir / f".{source.stem}.watermarking.webp"
             with Image.open(source) as image:
                 watermarked = add_watermark(image)
-                watermarked.save(temporary_output, "WEBP", quality=82, method=6)
+                watermarked.save(temporary_output, "WEBP", quality=78, method=6)
             temporary_output.replace(output)
             generated += 1
             output_bytes += output.stat().st_size
