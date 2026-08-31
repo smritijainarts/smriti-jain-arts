@@ -572,6 +572,7 @@ const dialogOrder = document.getElementById("dialogOrder");
 const dialogSocial = document.getElementById("dialogSocial");
 const dialogZoom = document.getElementById("dialogZoom");
 let pageScrollBeforeDialog = 0;
+let dialogTriggerElement = null;
 
 function restorePageScrollInstantly(top) {
   const root = document.documentElement;
@@ -603,10 +604,11 @@ function getSocialPlatform(url = "") {
   return "social";
 }
 
-function openProduct(index) {
+function openProduct(index, triggerElement = null) {
   const product = products[index];
   if (!product) return;
   pageScrollBeforeDialog = Number(globalThis.scrollY || 0);
+  dialogTriggerElement = triggerElement;
   productDialog.scrollTop = 0;
   const images = getImages(product).map(original => ({
     url: getWatermarkedUrl(original),
@@ -653,24 +655,50 @@ function openProduct(index) {
 grid.addEventListener("click", event => {
   const card = event.target.closest(".product");
   if (card) {
-    openProduct(Number(card.dataset.index));
-    clearProductSearch();
+    openProduct(Number(card.dataset.index), card);
   }
 });
 grid.addEventListener("keydown", event => {
   if ((event.key === "Enter" || event.key === " ") && event.target.classList.contains("product")) {
     event.preventDefault();
-    openProduct(Number(event.target.dataset.index));
-    clearProductSearch();
+    openProduct(Number(event.target.dataset.index), event.target);
   }
 });
 dialogClose.addEventListener("click", () => productDialog.close());
 productDialog.addEventListener("click", event => {
   if (event.target === productDialog) productDialog.close();
 });
+// Open social posts separately so the current product dialog, collection page
+// and scroll position remain untouched when the visitor returns.
+dialogSocial.addEventListener("click", event => {
+  const socialUrl = dialogSocial.href;
+  if (!socialUrl || socialUrl === "#") return;
+  event.preventDefault();
+  globalThis.open(socialUrl, "_blank", "noopener,noreferrer");
+});
 productDialog.addEventListener("close", () => {
   productDialog.scrollTop = 0;
-  restorePageScrollInstantly(pageScrollBeforeDialog);
+  dialogZoom.classList.remove("is-zoomed");
+  dialogImage.style.transformOrigin = "50% 50%";
+  const returnTop = pageScrollBeforeDialog;
+  const trigger = dialogTriggerElement;
+  dialogTriggerElement = null;
+  // Let the dialog fully release its focus and scroll lock before returning to
+  // the exact product card and its original collection-page position.
+  const restoreReturnPosition = () => {
+    restorePageScrollInstantly(returnTop);
+    trigger?.focus?.({ preventScroll: true });
+  };
+  if (typeof globalThis.requestAnimationFrame === "function") {
+    globalThis.requestAnimationFrame(() => {
+      globalThis.requestAnimationFrame(restoreReturnPosition);
+    });
+  } else {
+    setTimeout(restoreReturnPosition, 0);
+  }
+  // Chromium may apply its native dialog focus restoration just after the
+  // close event. Repeat once after that pass so it cannot pull the page away.
+  setTimeout(restoreReturnPosition, 80);
 });
 let zoomPointerType = "mouse";
 let touchZoomStart = null;
