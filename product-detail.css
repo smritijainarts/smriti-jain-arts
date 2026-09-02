@@ -361,3 +361,19 @@
     aspect-ratio: 1;
   }
 }
+
+/* iPhone Safari can position a native <dialog> against the document instead
+   of the visible viewport on a long, scrolled page. Keep it in the top layer
+   and centre it explicitly. This feature query only applies to iOS WebKit. */
+@supports (-webkit-touch-callout: none) {
+  @media (max-width: 640px) {
+    .product-dialog[open] {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      margin: 0;
+      transform: translate(-50%, -50%);
+      max-height: calc(100dvh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 16px);
+    }
+  }
+}
