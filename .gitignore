@@ -1,6 +1,7 @@
 # Local build and verification files (not part of the website)
 .codex/reviews-sheet/
 outputs/reviews-setup/
+outputs/social/
 
 # New, unprocessed camera photos stay local until they are grouped and prepared.
 images/incoming/

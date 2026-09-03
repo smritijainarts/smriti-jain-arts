@@ -1,4 +1,4 @@
-const PHONE = "917666767484";
+const PHONE = "919225297267";
 const SHEET_ID = "1Nk2EYh-vV5psAIMAXXmqzhGmGDD3RHwVCUb5yg_muaw";
 // Read from the filter-independent mirror tab. The editable Products tab can
 // be filtered or sorted without hiding catalogue rows from website visitors.
